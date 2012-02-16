@@ -6,23 +6,21 @@ sudo apt-get -y upgrade
 
 echo 'Setting up Salt Master'
 echo 'Copying Salt Master config file to VM'
-sudo cp /vagrant/etc/master.conf /etc/salt/master
-#sudo cp /vagrant/etc/master/mincheck.json /etc/salt/
-
-#echo 'Setup the Runner and Returner scripts'
-#PYTHON_INSTALL_DIR=/usr/local/lib/python2.7/dist-packages
-#cd $PYTHON_INSTALL_DIR/salt/returners
-#sudo ln -s /vagrant/caramel/returners/zeromq_return.py zeromq_return.py
-#cd $PYTHON_INSTALL_DIR/salt/runners
-#sudo ln -s /vagrant/caramel/runners/minstatus.py minstatus.py
+sudo cp /vagrant/etc/salt/master.conf /etc/salt/master
 
 echo 'Setup Logstash scripts'
 LOGSTASH_JAR=logstash-1.1.0-monolithic.jar
-mkdir /usr/local/logstash
-mkdir /etc/logstash
-mkdir /var/log/logstash
-cd /usr/local/logstash
-wget http://semicomplete.com/files/logstash/logstash-1.1.0-monolithic.jar
+[ -d /usr/local/lib/logstash ] || mkdir /usr/local/lib/logstash
+[ -d /etc/logstash ] || mkdir /etc/logstash
+
+if [ -f /vagrant/downloads/$LOGSTASH_JAR ]; then
+    echo 'Copying from local dir'
+    cp /vagrant/downloads/$LOGSTASH_JAR /usr/local/lib/logstash
+else
+    echo 'Downloading from remote site'
+    cd /usr/local/lib/logstash
+    wget http://semicomplete.com/files/logstash/logstash-1.1.0-monolithic.jar    
+fi
 cp /vagrant/etc/logstash/master.conf /etc/logstash 
 
 echo 'Install Java'
@@ -33,6 +31,6 @@ nohup sudo salt-master > /dev/null 2>&1 &
 echo 'Salt Master process started'
 
 echo 'Start Logstash process'
-cd /usr/local/logstash
-nohup java -jar $LOGSTASH_JAR agent -f /etc/logstash/master.conf > /var/log/logstash/logstash.out 2>&1 &
+cd /usr/local/lib/logstash
+nohup java -jar $LOGSTASH_JAR agent -f /etc/logstash/master.conf > /var/log/logstash.log 2>&1 &
 echo 'Logstash process started'
