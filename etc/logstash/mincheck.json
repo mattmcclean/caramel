@@ -1,0 +1,9 @@
+import json
+from pprint import pprint
+
+json_data = open('cmd.json')
+data = json.load(json_data)
+pprint(data)
+print data.__class__.__name__
+
+json_data.close()
