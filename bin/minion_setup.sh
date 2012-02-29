@@ -33,6 +33,11 @@ if [ -f /vagrant/downloads/$ELASTICSEARCH_ZIP ]; then
     cp /vagrant/downloads/$ELASTICSEARCH_ZIP /tmp
 fi
 
+echo 'Setting up log permissions for Salt'
+[ -d /var/log/salt ] || sudo mkdir /var/log/salt
+sudo chgrp -R adm /var/log/salt
+sudo chmod -R 750 /var/log/salt
+
 echo 'Starting Salt Minion'
 nohup sudo salt-minion > /dev/null 2>&1 &
 echo 'Salt Minion started'

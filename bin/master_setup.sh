@@ -23,8 +23,10 @@ else
 fi
 cp /vagrant/etc/logstash/master.conf /etc/logstash 
 
-echo 'Install Java'
-sudo apt-get -y install openjdk-6-jre
+echo 'Setting up log permissions for Salt'
+[ -d /var/log/salt ] || sudo mkdir /var/log/salt
+sudo chgrp -R adm /var/log/salt
+sudo chmod -R 750 /var/log/salt
 
 echo 'Starting Salt Master process'
 nohup sudo salt-master > /dev/null 2>&1 &

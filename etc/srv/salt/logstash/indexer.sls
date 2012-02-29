@@ -42,5 +42,5 @@ logstash-service:
     - watch:
       - file: /etc/logstash/indexer.conf
       - file: /etc/init.d/logstash
-      - file: logstash-binary
+#      - file: logstash-binary
     

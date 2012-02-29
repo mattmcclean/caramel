@@ -11,7 +11,7 @@ Vagrant::Config.run do |config|
     # Configure the host name
     saltmaster_config.vm.host_name = "saltmaster.example.com"
     # Configure the box
-    saltmaster_config.vm.box = "oneiric-salt096"
+    saltmaster_config.vm.box = "logstash-salt"
     # Setup the network
     saltmaster_config.vm.network :hostonly, "192.168.1.10"
     # Setup the script provisioner
@@ -23,7 +23,7 @@ Vagrant::Config.run do |config|
     # Configure the host name
     webserver_config.vm.host_name = "webserver.example.com"
     # Configure the box
-    webserver_config.vm.box = "oneiric-salt096"
+    webserver_config.vm.box = "logstash-salt"
     # Setup the network
     webserver_config.vm.network :hostonly, "192.168.1.11"
     # Set the port forwarding for the webserver
@@ -40,7 +40,12 @@ Vagrant::Config.run do |config|
     # Configure the host name
     logindex_config.vm.host_name = "logindex.example.com"
     # Configure the box
-    logindex_config.vm.box = "oneiric-salt096"
+    logindex_config.vm.box = "logstash-salt"
+    # Set the memory
+    logindex_config.vm.customize [
+      "modifyvm", :id,
+      "--memory", "1024"
+    ]
     # Setup the network
     logindex_config.vm.network :hostonly, "192.168.1.12"
     # Set the port forwarding for the index server

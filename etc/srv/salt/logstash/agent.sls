@@ -1,7 +1,6 @@
 include:
   - logstash.base
 
-
 /etc/init.d/logstash:
   file:
     - managed
@@ -22,6 +21,6 @@ logstash-service:
     - watch:
       - file: /etc/init.d/logstash
       - file: /etc/logstash/agent.conf
-      - file: logstash-binary
+#      - file: logstash-binary
 
 
