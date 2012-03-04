@@ -1,0 +1,5 @@
+# Salt log format
+SALTTIMESTAMP %{DATE_EU} %{TIME}
+SALTLOG_LEVEL (?:DEBUG|FATAL|ERROR|WARNING|INFO)
+SALTCMD salt\.\w+
+SALTLOGBASE %{SALTTIMESTAMP:timestamp} \[%{SALTCMD:saltcmd}(?:[ \t]+)\]\[%{SALTLOG_LEVEL:loglevel}(?:[ \t]+)\] %{GREEDYDATA:logmsg} 
