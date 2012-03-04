@@ -50,6 +50,8 @@ Vagrant::Config.run do |config|
     logindex_config.vm.network :hostonly, "192.168.1.12"
     # Set the port forwarding for the index server
     logindex_config.vm.forward_port 9292, 9292
+    # Set the port forwarding for the Kibana webserver
+    logindex_config.vm.forward_port 80, 8081
     # Setup the script provisioner
     logindex_config.vm.provision :shell do |shell|
       shell.path = "bin/minion_setup.sh"
