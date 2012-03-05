@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ -f /etc/apt/sources.list.d/oab.list ]; then
+  echo 'Removing unnecessry apt repository file'
+  rm /etc/apt/sources.list.d/oab.list
+fi
+
 echo 'Update repository files'
 sudo apt-get update
 sudo apt-get -y upgrade

@@ -5,6 +5,11 @@ die () {
 }
 [ "$#" -eq 1 ] || die "1 argument required, $# provided"
 
+if [ -f /etc/apt/sources.list.d/oab.list ]; then
+  echo 'Removing unnecessry apt repository file'
+  rm /etc/apt/sources.list.d/oab.list
+fi
+
 echo 'Updating repsoitory files'
 sudo apt-get update
 sudo apt-get -y upgrade
