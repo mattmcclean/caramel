@@ -18,9 +18,9 @@ LOGSTASH_JAR=logstash-1.1.0-monolithic.jar
 [ -d /usr/local/lib/logstash ] || mkdir /usr/local/lib/logstash
 [ -d /etc/logstash ] || mkdir /etc/logstash
 
-if [ -f /vagrant/downloads/$LOGSTASH_JAR ]; then
+if [ -f /vagrant/etc/srv/salt/logstash/$LOGSTASH_JAR ]; then
     echo 'Copying from local dir'
-    cp /vagrant/downloads/$LOGSTASH_JAR /usr/local/lib/logstash
+    cp /vagrant/etc/srv/salt/logstash/$LOGSTASH_JAR /usr/local/lib/logstash
 else
     echo 'Downloading from remote site'
     cd /usr/local/lib/logstash

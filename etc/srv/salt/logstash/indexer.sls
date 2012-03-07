@@ -9,8 +9,8 @@ elasticsearch-binary:
   file:
     - managed
     - name: /tmp/elasticsearch-0.18.7.zip
-    - source: https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.18.7.zip
-    - source_hash: md5=9587b222277852b8c778180019d4a551
+    - source: salt://logstash/elasticsearch-0.18.7.zip
+#      - https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.18.7.zip: md5=9587b222277852b8c778180019d4a551
 
 unzip /tmp/elasticsearch-0.18.7.zip:
   cmd:
@@ -21,26 +21,26 @@ unzip /tmp/elasticsearch-0.18.7.zip:
     - require:
       - pkg: zip
       - file: elasticsearch-binary
+      - file: /usr/local/lib/logstash
 
-/etc/init.d/logstash:
-  file:
-    - managed
-    - source: salt://logstash/logstash-web
-    - mode: 744
-
-/etc/logstash/indexer.conf:
+/etc/logstash/logstash.conf:
   file:
     - managed
     - source: salt://logstash/indexer.conf
     - makedirs: True
     - mode: 644
 
-logstash-service:
-  service:
-    - running
-    - name: logstash
-    - watch:
-      - file: /etc/logstash/indexer.conf
-      - file: /etc/init.d/logstash
-#      - file: logstash-binary
-    
+/etc/logstash/grok/patterns/salt:
+  file:
+    - managed
+    - source: salt://logstash/grok/patterns/salt
+    - makedirs: True
+    - mode: 644
+
+extend:
+  /etc/init.d/logstash:
+    file:
+      - context:
+          logstash_args: "agent -f /etc/logstash/logstash.conf -- web --backend elasticsearch:///?local"
+      - require:
+        - file: elasticsearch-binary     

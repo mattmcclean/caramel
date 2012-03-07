@@ -22,7 +22,7 @@
 JAVA_HOME=/usr/lib/jvm/java-6-sun/jre
  
 serviceNameLo="logstash"                                   # service name with the first letter in lowercase
-serviceName="Logstash Web App"                             # service name
+serviceName="Logstash"                                     # service name
 serviceUser="root"                                         # OS user name for the service
 serviceGroup="root"                                        # OS group name for the service
 applDir="/usr/local/lib/$serviceNameLo"                    # home directory of the service application
@@ -33,7 +33,7 @@ pidFile="/var/run/$serviceNameLo.pid"                      # name of PID file (P
 javaCommand="java"                                         # name of the Java launcher without the path
 javaExe="$JAVA_HOME/bin/$javaCommand"                      # file name of the Java application launcher executable
 jarName="logstash-1.1.0-monolithic.jar"                    # Name of the jar file to start service
-javaArgs="-Xmx800m -jar $applDir/$jarName agent -f /etc/logstash/indexer.conf -- web --backend elasticsearch:///?local"                     # arguments for Java launcher
+javaArgs="-jar $applDir/$jarName {{ logstash_args }}"      # arguments for Java launcher
 javaCommandLine="$javaExe $javaArgs"                       # command line to start the Java service application
 javaCommandLineKeyword="$jarName"                     # a keyword that occurs on the commandline, used to detect an already running service process and to distinguish it from others
  
